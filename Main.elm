@@ -1,9 +1,13 @@
 module Hello exposing (..)
 
 import Html exposing (..)
+import Html.Events exposing (onClick)
+import Html.Attributes exposing (..)
 import Json.Decode exposing (Decoder, at, list, string, succeed)
 import Http
-import Html.Events exposing (onClick)
+import Bootstrap.CDN as CDN
+import Bootstrap.Grid as Grid
+import Bootstrap.Button as Button
 
 
 type alias Model =
@@ -69,10 +73,29 @@ main =
         }
 
 
+mainContent : { a | currentPrice : String } -> Html Msg
+mainContent model =
+    div []
+        [ p [] [ h1 [] [ text "Bitcoin Price" ], h5 [] [ text "It costs right\n        now:" ] ]
+        , p [ class "alert alert-success" ] [ h4 [] [ text model.currentPrice, text " USD" ] ]
+        , Button.button
+            [ Button.outlinePrimary
+            , Button.attrs [ onClick GetBitcoinPrice ]
+            ]
+            [ text "Update it now" ]
+        , div [ class "text-right small" ]
+            [ a [ href "https://github.com/dailydrip/elm-bitcoin-price" ]
+                [ text
+                    "Source Code"
+                ]
+            ]
+        ]
+
+
 view : Model -> Html Msg
 view model =
-    div []
-        [ p [] [ text "Hello World" ]
-        , p [] [ text model.currentPrice ]
-        , button [ onClick GetBitcoinPrice ] [ text "get it again" ]
+    Grid.container [ class "text-center jumbotron" ]
+        -- Responsive fixed width container
+        [ CDN.stylesheet -- Inlined Bootstrap CSS for use with reactor
+        , mainContent model
         ]
