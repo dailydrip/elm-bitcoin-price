@@ -50,7 +50,7 @@ update msg model =
 
 api : String
 api =
-    "https://api.coindesk.com/v1/bpi/currentprice.json"
+    "http://api.coindesk.com/v1/bpi/currentprice.json"
 
 
 getBitcoinPrice : Http.Request String
