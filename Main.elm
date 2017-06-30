@@ -4,7 +4,6 @@ import Html exposing (..)
 import Json.Decode exposing (Decoder, at, list, string, succeed)
 import Http
 import Html.Events exposing (onClick)
-import Time exposing (every, second)
 
 
 type alias Model =
@@ -27,7 +26,7 @@ update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         NoOp ->
-            model ! []
+            ( model, Cmd.none )
 
         GetBitcoinPrice ->
             ( model, Http.send GotBitcoinPrice getBitcoinPrice )
@@ -66,13 +65,8 @@ main =
         { init = init
         , update = update
         , view = view
-        , subscriptions = subscriptions
+        , subscriptions = always Sub.none
         }
-
-
-subscriptions : Model -> Sub Msg
-subscriptions model =
-    Time.every second (always GetBitcoinPrice)
 
 
 view : Model -> Html Msg
