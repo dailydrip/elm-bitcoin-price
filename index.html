@@ -10843,7 +10843,7 @@ var _user$project$Hello$decodeContent = A2(
 		}
 	},
 	_elm_lang$core$Json_Decode$string);
-var _user$project$Hello$api = 'https://api.coindesk.com/v1/bpi/currentprice.json';
+var _user$project$Hello$api = 'http://api.coindesk.com/v1/bpi/currentprice.json';
 var _user$project$Hello$getBitcoinPrice = A2(_elm_lang$http$Http$get, _user$project$Hello$api, _user$project$Hello$decodeContent);
 var _user$project$Hello$Model = function (a) {
 	return {currentPrice: a};
@@ -10898,7 +10898,8 @@ var _user$project$Hello$mainContent = function (model) {
 							{ctor: '[]'},
 							{
 								ctor: '::',
-								_0: _elm_lang$html$Html$text(model.currentPrice),
+								_0: _elm_lang$html$Html$text(
+									A2(_elm_lang$core$Maybe$withDefault, 'Not yet!', model.currentPrice)),
 								_1: {
 									ctor: '::',
 									_0: _elm_lang$html$Html$text(' USD'),
@@ -11004,7 +11005,9 @@ var _user$project$Hello$update = F2(
 						ctor: '_Tuple2',
 						_0: _elm_lang$core$Native_Utils.update(
 							model,
-							{currentPrice: _p1._0}),
+							{
+								currentPrice: _elm_lang$core$Maybe$Just(_p1._0)
+							}),
 						_1: _elm_lang$core$Platform_Cmd$none
 					};
 				}
@@ -11013,7 +11016,7 @@ var _user$project$Hello$update = F2(
 var _user$project$Hello$init = A2(
 	_user$project$Hello$update,
 	_user$project$Hello$GetBitcoinPrice,
-	{currentPrice: 'Not yet!'});
+	{currentPrice: _elm_lang$core$Maybe$Nothing});
 var _user$project$Hello$main = _elm_lang$html$Html$program(
 	{
 		init: _user$project$Hello$init,
