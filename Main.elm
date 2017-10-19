@@ -11,13 +11,13 @@ import Bootstrap.Button as Button
 
 
 type alias Model =
-    { currentPrice : String
+    { currentPrice : Maybe String
     }
 
 
 init : ( Model, Cmd Msg )
 init =
-    update GetBitcoinPrice { currentPrice = "Not yet!" }
+    update GetBitcoinPrice { currentPrice = Nothing }
 
 
 type Msg
@@ -45,7 +45,7 @@ update msg model =
                         ( model, Cmd.none )
 
                 Ok price ->
-                    ( { model | currentPrice = price }, Cmd.none )
+                    ( { model | currentPrice = Just price }, Cmd.none )
 
 
 api : String
@@ -73,11 +73,20 @@ main =
         }
 
 
-mainContent : { a | currentPrice : String } -> Html Msg
+mainContent : Model -> Html Msg
 mainContent model =
     div []
         [ p [] [ h1 [] [ text "Bitcoin Price" ], h5 [] [ text "It costs right\n        now:" ] ]
-        , p [ class "alert alert-success" ] [ h4 [] [ text model.currentPrice, text " USD" ] ]
+        , p [ class "alert alert-success" ]
+            [ h4 []
+                [ text
+                    (Maybe.withDefault
+                        "Not yet!"
+                        model.currentPrice
+                    )
+                , text " USD"
+                ]
+            ]
         , Button.button
             [ Button.outlinePrimary
             , Button.attrs [ onClick GetBitcoinPrice ]
